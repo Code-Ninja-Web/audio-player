@@ -16,8 +16,8 @@ The app reads channel metadata from RestDB and plays audio streams (HLS) in a li
 
 - `src/`: frontend app
 - `scripts/`: ingest pipeline (scrape source + write to RestDB)
-- `.github/workflows/node.js.yml`: build and GitHub Pages deploy
-- `.github/workflows/ingester.yml`: scheduled ingest job
+- `.github/workflows/deploy-pages.yml`: build and GitHub Pages deploy
+- `.github/workflows/channel-ingest.yml`: scheduled ingest job
 
 ## Requirements
 
@@ -77,7 +77,7 @@ yarn dev
 
 ## Ingester Cron Setup
 
-The ingest pipeline is configured in `.github/workflows/ingester.yml`.
+The ingest pipeline is configured in `.github/workflows/channel-ingest.yml`.
 
 ### Current Schedule
 

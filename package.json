@@ -17,6 +17,7 @@
         "validate": "yarn typecheck && yarn format:check && yarn lint && yarn test:no-watch",
         "lint": "eslint src scripts",
         "lint:fix": "eslint --fix src scripts",
+        "lint-staged": "lint-staged",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
         "ingest": "tsc --project scripts && node dist/scripts",
