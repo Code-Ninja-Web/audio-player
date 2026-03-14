@@ -1,7 +1,7 @@
 import { Spinner } from 'grommet'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, type ReactElement } from 'react'
 import styled from 'styled-components'
-import { useAppContext } from './AppContext'
+import { useAppContext } from './AppStateContext'
 import ChannelsList from './ChannelsList'
 import Player from './Player'
 
@@ -14,7 +14,7 @@ const Container = styled.div`
     margin-bottom: 80px;
 `
 
-const Radio = (): JSX.Element => {
+const Radio = (): ReactElement => {
     const { channels, isPlaying } = useAppContext()
     const [autoPlay, setAutoPlay] = useState<boolean>(false)
 

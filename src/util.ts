@@ -5,11 +5,21 @@ export interface IChannelInfo {
     audioSrc: string
 }
 
+const getChannelsApiUrl = (): string => {
+    const base = import.meta.env.VITE_RESTDB_BASE_URL
+    const collection = import.meta.env.VITE_RESTDB_COLLECTION
+    if (!base) throw new Error('VITE_RESTDB_BASE_URL is required')
+    if (!collection) throw new Error('VITE_RESTDB_COLLECTION is required')
+    return `${base}/${collection}`
+}
+
 const fetchChannels = async (): Promise<IChannelInfo[]> => {
+    const apiKey = import.meta.env.VITE_RESTDB_API_KEY
+    if (!apiKey) throw new Error('VITE_RESTDB_API_KEY is required')
     const response = await (
-        await fetch('https://player-b7f2.restdb.io/rest/air-channels', {
+        await fetch(getChannelsApiUrl(), {
             headers: {
-                'x-apikey': process.env.REACT_APP_RESTDB_API_KEY || '',
+                'x-apikey': apiKey,
             },
         })
     ).json()

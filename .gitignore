@@ -40,3 +40,11 @@ yarn-error.log*
 /.changelog
 .npm/
 dist
+
+# Yarn Berry (node-modules linker)
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

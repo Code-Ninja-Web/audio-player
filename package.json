@@ -1,70 +1,73 @@
 {
-  "name": "audio-player",
-  "version": "0.0.1",
-  "private": true,
-  "homepage": "http://prasantasaha.github.io/audio-player",
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "test:no-watch": "npm run test -- --watchAll=false",
-    "lint": "eslint src scripts",
-    "lint:fix": "eslint --fix src scripts",
-    "format": "prettier --write src/**/*.{ts,tsx,css,md,json}",
-    "ingest": "tsc --project scripts && node dist/scripts"
-  },
-  "dependencies": {
-    "grommet": "2.17.5",
-    "grommet-icons": "^4.6.2",
-    "hls.js": "1.0.10",
-    "react": "16.14.0",
-    "react-dom": "16.14.0",
-    "styled-components": "5.3.1"
-  },
-  "devDependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@types/cheerio": "0.22.30",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^16.7.6",
-    "@types/react": "^17.0.19",
-    "@types/react-dom": "17.0.9",
-    "@types/styled-components": "5.1.13",
-    "axios": "^0.21.4",
-    "cheerio": "0.22.0",
-    "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.27.1",
-    "husky": "^4.3.8",
-    "lint-staged": "^12.1.2",
-    "prettier": "^2.5.1",
-    "react-scripts": "^4.0.3",
-    "typescript": "3.9.4"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "npm run test:no-watch"
+    "name": "audio-player",
+    "version": "0.0.1",
+    "private": true,
+    "packageManager": "yarn@4.13.0",
+    "engines": {
+        "node": ">=20"
+    },
+    "homepage": "https://code-ninja-web.github.io/audio-player",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview",
+        "typecheck": "tsc --noEmit && tsc --project scripts --noEmit",
+        "test": "vitest",
+        "test:no-watch": "vitest run",
+        "validate": "yarn typecheck && yarn format:check && yarn lint && yarn test:no-watch",
+        "lint": "eslint src scripts",
+        "lint:fix": "eslint --fix src scripts",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "ingest": "tsc --project scripts && node dist/scripts",
+        "prepare": "husky"
+    },
+    "dependencies": {
+        "grommet": "^2.53.0",
+        "grommet-icons": "^4.14.0",
+        "hls.js": "^1.6.15",
+        "react": "^19.2.4",
+        "react-dom": "^19.2.4",
+        "react-is": "^19.2.4",
+        "styled-components": "^6.3.11"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.39.4",
+        "@testing-library/dom": "^10.4.1",
+        "@testing-library/jest-dom": "^6.9.1",
+        "@testing-library/react": "^16.3.2",
+        "@testing-library/user-event": "^14.6.1",
+        "@types/cheerio": "^1.0.0",
+        "@types/jest": "^30.0.0",
+        "@types/node": "^20.19.37",
+        "@types/react": "^19.2.14",
+        "@types/react-dom": "^19.2.3",
+        "@types/react-is": "^19.2.0",
+        "@typescript-eslint/eslint-plugin": "^8.46.1",
+        "@typescript-eslint/parser": "^8.46.1",
+        "@vitejs/plugin-react": "^6.0.1",
+        "axios": "^1.13.6",
+        "cheerio": "^1.2.0",
+        "dotenv": "^17.3.1",
+        "eslint": "^9.39.1",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-prettier": "^5.5.5",
+        "eslint-plugin-react": "^7.37.5",
+        "eslint-plugin-react-hooks": "^7.0.1",
+        "eslint-plugin-react-refresh": "^0.5.2",
+        "globals": "^17.4.0",
+        "husky": "^9.1.7",
+        "jsdom": "^28.1.0",
+        "lint-staged": "^16.3.3",
+        "prettier": "^3.8.1",
+        "typescript": "^5.9.3",
+        "vite": "^8.0.0",
+        "vitest": "^4.1.0"
+    },
+    "lint-staged": {
+        "src/**/*.{ts,tsx}": [
+            "yarn lint:fix",
+            "git add"
+        ]
     }
-  },
-  "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "npm run lint:fix",
-      "git add"
-    ]
-  }
 }

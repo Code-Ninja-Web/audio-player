@@ -1,8 +1,14 @@
 import { Box, Image, Text, TextInput } from 'grommet'
 import { Search } from 'grommet-icons'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, {
+    useCallback,
+    useEffect,
+    useState,
+    type ChangeEvent,
+    type ReactElement,
+} from 'react'
 import styled from 'styled-components'
-import { useAppContext } from './AppContext'
+import { useAppContext } from './AppStateContext'
 import { IChannelInfo } from './util'
 
 const OuterWrapper = styled.div`
@@ -45,9 +51,13 @@ const IconImage = styled.img`
 `
 
 interface ISuggestion {
-    label: JSX.Element
+    label: ReactElement
     value: string
     channel: IChannelInfo
+}
+
+interface ISuggestionSelectEvent {
+    suggestion: ISuggestion
 }
 
 const formatSuggestions = (
@@ -82,7 +92,7 @@ const formatSuggestions = (
             channel: suggestedChannel,
         }))
 
-const Header = (): JSX.Element => {
+const Header = (): ReactElement => {
     const { channels, updateCurrentChannel } = useAppContext()
     const [selectedChannel, setSelectedChannel] = useState<IChannelInfo>()
     const [suggestionOpen, setSuggestionOpen] = useState(false)
@@ -96,10 +106,10 @@ const Header = (): JSX.Element => {
     }, [selectedChannel, updateCurrentChannel])
 
     const onInputChange = useCallback(
-        (event) => {
+        (event: ChangeEvent<HTMLInputElement>) => {
             const { value: newValue } = event.target
             setSelectedChannelTitle(newValue)
-            setSelectedChannel(newValue)
+            setSelectedChannel(undefined)
 
             if (!newValue.trim()) {
                 setSuggestions([])
@@ -110,7 +120,7 @@ const Header = (): JSX.Element => {
         [channels]
     )
 
-    const onSuggestionSelect = useCallback((event) => {
+    const onSuggestionSelect = useCallback((event: ISuggestionSelectEvent) => {
         setSelectedChannel(event.suggestion.channel)
         setSelectedChannelTitle(event.suggestion.value)
     }, [])
@@ -130,10 +140,7 @@ const Header = (): JSX.Element => {
     return (
         <OuterWrapper>
             <InnerWrapper>
-                <IconImage
-                    src={process.env.PUBLIC_URL + '/assets/icons/icon-x192.png'}
-                    alt="Logo"
-                />
+                <IconImage src={'/assets/icons/icon-x192.png'} alt="Logo" />
                 <Box
                     width="medium"
                     gap="medium"

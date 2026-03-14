@@ -1,7 +1,7 @@
 import { Button } from 'grommet'
-import React, { Fragment } from 'react'
+import React, { Fragment, type ReactElement } from 'react'
 import styled from 'styled-components'
-import { useAppContext } from './AppContext'
+import { useAppContext } from './AppStateContext'
 
 import { PlayFill, PauseFill, Next, Previous } from 'grommet-icons'
 import { IconButton } from './ChannelInfo.styles'
@@ -12,7 +12,7 @@ const Container = styled.div<{ expanded: boolean }>`
     gap: ${(props) => (props.expanded ? '30px' : 0)};
 `
 
-const PlayerControls = ({ expanded }: { expanded: boolean }): JSX.Element => {
+const PlayerControls = ({ expanded }: { expanded: boolean }): ReactElement => {
     const {
         currentChannel,
         isPlaying,

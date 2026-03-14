@@ -7,9 +7,10 @@ import React, {
     useEffect,
     useRef,
     useState,
+    type ReactElement,
 } from 'react'
 import styled from 'styled-components'
-import { useAppContext } from './AppContext'
+import { useAppContext } from './AppStateContext'
 import ChannelInfo from './ChannelInfo'
 import PlayerActions from './PlayerActions'
 import { areEqual } from './util'
@@ -44,7 +45,7 @@ export interface IPlayerProps {
     autoPlay?: boolean
 }
 
-const Player = (props: IPlayerProps): JSX.Element => {
+const Player = (props: IPlayerProps): ReactElement => {
     const search = window.location.search
     const params = new URLSearchParams(search)
     const channelId = params.get('channelId')
