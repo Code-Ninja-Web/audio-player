@@ -6,16 +6,16 @@ export interface IChannelInfo {
 }
 
 const getChannelsApiUrl = (): string => {
-    const base = process.env.REACT_APP_RESTDB_BASE_URL
-    const collection = process.env.REACT_APP_RESTDB_COLLECTION
-    if (!base) throw new Error('REACT_APP_RESTDB_BASE_URL is required')
-    if (!collection) throw new Error('REACT_APP_RESTDB_COLLECTION is required')
+    const base = import.meta.env.VITE_RESTDB_BASE_URL
+    const collection = import.meta.env.VITE_RESTDB_COLLECTION
+    if (!base) throw new Error('VITE_RESTDB_BASE_URL is required')
+    if (!collection) throw new Error('VITE_RESTDB_COLLECTION is required')
     return `${base}/${collection}`
 }
 
 const fetchChannels = async (): Promise<IChannelInfo[]> => {
-    const apiKey = process.env.REACT_APP_RESTDB_API_KEY
-    if (!apiKey) throw new Error('REACT_APP_RESTDB_API_KEY is required')
+    const apiKey = import.meta.env.VITE_RESTDB_API_KEY
+    if (!apiKey) throw new Error('VITE_RESTDB_API_KEY is required')
     const response = await (
         await fetch(getChannelsApiUrl(), {
             headers: {

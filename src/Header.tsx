@@ -130,10 +130,7 @@ const Header = (): JSX.Element => {
     return (
         <OuterWrapper>
             <InnerWrapper>
-                <IconImage
-                    src={process.env.PUBLIC_URL + '/assets/icons/icon-x192.png'}
-                    alt="Logo"
-                />
+                <IconImage src={'/assets/icons/icon-x192.png'} alt="Logo" />
                 <Box
                     width="medium"
                     gap="medium"
