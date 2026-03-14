@@ -99,7 +99,7 @@ const fetchChannelsFromIngestPage = async (
     const channels = parseChannelsObject(scriptStr)
     return Object.entries(channels)
         .filter(
-            ([_, v]) =>
+            ([, v]) =>
                 v &&
                 typeof v.name === 'string' &&
                 typeof v.live_url === 'string'
