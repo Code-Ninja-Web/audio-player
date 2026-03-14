@@ -1,7 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
+    // Serve from root on localhost, build for GitHub Pages project path.
+    base: mode === 'production' ? '/audio-player/' : '/',
     plugins: [react()],
     build: {
         rollupOptions: {
@@ -42,4 +44,4 @@ export default defineConfig({
         globals: true,
         setupFiles: ['./src/setupTests.ts'],
     },
-})
+}))
