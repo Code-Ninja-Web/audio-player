@@ -65,9 +65,14 @@
         "vitest": "^4.1.0"
     },
     "lint-staged": {
+        "*.{js,jsx,ts,tsx,json,md,css,scss,yml,yaml,html}": [
+            "prettier --check"
+        ],
         "src/**/*.{ts,tsx}": [
-            "yarn lint:fix",
-            "git add"
+            "eslint --fix"
+        ],
+        "scripts/**/*.ts": [
+            "eslint --fix"
         ]
     }
 }

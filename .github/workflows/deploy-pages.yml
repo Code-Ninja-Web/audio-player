@@ -4,6 +4,9 @@ on:
     push:
         branches: [master]
 
+env:
+    FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 permissions:
     contents: read
     pages: write
@@ -23,7 +26,7 @@ jobs:
                 # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v6
             - name: Setup Pages
               uses: actions/configure-pages@v5
             - name: create env file
@@ -33,7 +36,7 @@ jobs:
                   echo "VITE_RESTDB_BASE_URL=${{ vars.RESTDB_BASE_URL }}" >> .env
                   echo "VITE_RESTDB_COLLECTION=${{ vars.RESTDB_COLLECTION }}" >> .env
             - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v4
+              uses: actions/setup-node@v6
               with:
                   node-version: ${{ matrix.node-version }}
             - name: Enable Corepack and activate Yarn
@@ -44,7 +47,7 @@ jobs:
             - run: yarn install --immutable
             - run: yarn build
             - name: Upload Pages artifact
-              uses: actions/upload-pages-artifact@v3
+              uses: actions/upload-pages-artifact@v4
               with:
                   path: dist
 
