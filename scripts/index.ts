@@ -1,7 +1,9 @@
 import { addChannels, resetChannelsList } from './restdb'
 import { fetchChannels } from './scrapper'
 import * as dotenv from 'dotenv'
-// prettier-ignore
+
+// Load .env.local first (so it wins), then .env. Use .env.local for secrets when running ingest locally.
+dotenv.config({ path: '.env.local' });
 dotenv.config();
 // update channels data
 // prettier-ignore

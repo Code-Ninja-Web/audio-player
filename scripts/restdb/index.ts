@@ -1,14 +1,28 @@
 import axios, { AxiosError } from 'axios'
 import { IChannelInfo } from 'scripts/scrapper'
 
-const DB_URL = `https://player-b7f2.restdb.io/rest`
-const COLLECTION_NAME = 'air-channels'
+const getDbUrl = (): string => {
+    const url = process.env['RESTDB_BASE_URL']
+    if (!url) throw new Error('RESTDB_BASE_URL is required')
+    return url
+}
+const getCollectionName = (): string => {
+    const name = process.env['RESTDB_COLLECTION']
+    if (!name) throw new Error('RESTDB_COLLECTION is required')
+    return name
+}
+const getApiKey = (): string => {
+    const key = process.env['FULL_ACCESS_RESTDB_API_KEY']
+    if (!key) throw new Error('FULL_ACCESS_RESTDB_API_KEY is required')
+    return key
+}
 const resetChannelsList = async (): Promise<void> => {
-    // delete all channels
+    const dbUrl = getDbUrl()
+    const collection = getCollectionName()
     try {
-        await axios.delete(`${DB_URL}/${COLLECTION_NAME}/*?q={}`, {
+        await axios.delete(`${dbUrl}/${collection}/*?q={}`, {
             headers: {
-                'x-apikey': process.env['FULL_ACCESS_RESTDB_API_KEY'],
+                'x-apikey': getApiKey(),
             },
         })
     } catch (error) {
@@ -18,10 +32,12 @@ const resetChannelsList = async (): Promise<void> => {
 }
 
 const addChannels = async (channels: IChannelInfo[]): Promise<void> => {
+    const dbUrl = getDbUrl()
+    const collection = getCollectionName()
     try {
-        await axios.post(`${DB_URL}/${COLLECTION_NAME}`, channels, {
+        await axios.post(`${dbUrl}/${collection}`, channels, {
             headers: {
-                'x-apikey': process.env['FULL_ACCESS_RESTDB_API_KEY'],
+                'x-apikey': getApiKey(),
             },
         })
     } catch (error) {

@@ -1,5 +1,9 @@
 name: Ingest pipeline for create update channel info
 
+# Required secret: FULL_ACCESS_RESTDB_API_KEY
+# Optional vars (use defaults if unset): RESTDB_BASE_URL, RESTDB_COLLECTION,
+#   INGEST_SOURCE_BASE_URL
+
 on:
   schedule:
   - cron: "0 0/12 * * *"
@@ -19,7 +23,10 @@ jobs:
     - name: create env file
       run: |
         touch .env
-        echo FULL_ACCESS_RESTDB_API_KEY =${{ secrets.FULL_ACCESS_RESTDB_API_KEY }} >> .env
+        echo "FULL_ACCESS_RESTDB_API_KEY=${{ secrets.FULL_ACCESS_RESTDB_API_KEY }}" >> .env
+        echo "RESTDB_BASE_URL=${{ vars.RESTDB_BASE_URL }}" >> .env
+        echo "RESTDB_COLLECTION=${{ vars.RESTDB_COLLECTION }}" >> .env
+        echo "INGEST_SOURCE_BASE_URL=${{ vars.INGEST_SOURCE_BASE_URL }}" >> .env
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
