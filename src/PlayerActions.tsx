@@ -1,8 +1,8 @@
 import PlayerControls from './PlayerControls'
 import { Favorite, Share } from 'grommet-icons'
 import { IconButton } from './ChannelInfo.styles'
-import React, { useEffect, useState } from 'react'
-import { useAppContext } from './AppContext'
+import React, { useEffect, useState, type ReactElement } from 'react'
+import { useAppContext } from './AppStateContext'
 import { areEqual, IChannelInfo } from './util'
 import styled from 'styled-components'
 import { Box } from 'grommet'
@@ -19,7 +19,7 @@ const PlayerActions = ({
 }: {
     currentChannel: IChannelInfo
     expanded: boolean
-}): JSX.Element => {
+}): ReactElement => {
     const [isFavourite, setIsFavourite] = useState<boolean>(false)
 
     const { favouriteChannels, toggleFavouriteChannel } = useAppContext()

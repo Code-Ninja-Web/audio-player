@@ -4,10 +4,10 @@ import * as dotenv from 'dotenv'
 
 // Load .env.local first (so it wins), then .env. Use .env.local for secrets when running ingest locally.
 dotenv.config({ path: '.env.local' })
-dotenv.config()(
-    // update channels data
-    // prettier-ignore
-    async () => {
+dotenv.config()
+
+// update channels data
+;(async () => {
     const channels = await fetchChannels()
     if (channels.length) {
         try {
@@ -24,5 +24,4 @@ dotenv.config()(
             console.error(`adding channels failed: ${(error as Error).message}`)
         }
     }
-}
-)()
+})()

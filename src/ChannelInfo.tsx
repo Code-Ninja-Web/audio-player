@@ -1,7 +1,7 @@
 import { Spinner } from 'grommet'
 import { StatusWarning } from 'grommet-icons'
 import { Text } from 'grommet/components/Text'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, type ReactElement } from 'react'
 import {
     Container,
     MediaArt,
@@ -25,7 +25,7 @@ const ChannelInfo = ({
     hasError,
     currentChannel,
     onClick,
-}: IChannelInfoProps): JSX.Element => {
+}: IChannelInfoProps): ReactElement => {
     const [expanded, setExpanded] = useState<boolean>(false)
 
     useEffect(() => {

@@ -1,43 +1,18 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, {
-    createContext,
     useState,
-    useContext,
     useEffect,
     useCallback,
+    type ReactElement,
+    type ReactNode,
 } from 'react'
+import { AppContext } from './AppStateContext'
 import { areEqual, fetchChannels, IChannelInfo } from './util'
-
-type AppContextParams = {
-    channels: IChannelInfo[]
-    favouriteChannels: IChannelInfo[] | undefined
-    currentChannel: IChannelInfo | null
-    isPlaying: boolean
-    updateCurrentChannel: (channelId: string) => void
-    togglePlayBack: () => void
-    nextChannel: () => void
-    prevChannel: () => void
-    toggleFavouriteChannel: (info: IChannelInfo) => void
-}
-
-export const AppContext = createContext<AppContextParams>({
-    channels: [],
-    favouriteChannels: undefined,
-    currentChannel: null,
-    isPlaying: false,
-    updateCurrentChannel: (channelId: string) => {},
-    togglePlayBack: () => {},
-    nextChannel: () => {},
-    prevChannel: () => {},
-    toggleFavouriteChannel: (info: IChannelInfo) => {},
-})
 
 export const AppContextProvider = ({
     children,
 }: {
-    children: JSX.Element[] | JSX.Element
-}): JSX.Element => {
+    children: ReactNode
+}): ReactElement => {
     const search = window.location.search
     const params = new URLSearchParams(search)
     const channelId = params.get('channelId')
@@ -202,5 +177,3 @@ export const AppContextProvider = ({
         </AppContext.Provider>
     )
 }
-
-export const useAppContext = (): AppContextParams => useContext(AppContext)

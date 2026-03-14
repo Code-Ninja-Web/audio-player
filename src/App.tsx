@@ -1,12 +1,12 @@
 import { Grommet } from 'grommet'
-import React, { useEffect } from 'react'
+import React, { useEffect, type ReactElement } from 'react'
 import { AppContextProvider } from './AppContext'
 import Header from './Header'
 import theme from './index.style'
 import Radio from './Radio'
 import { resizeToMinimum } from './util'
 
-const App = (): JSX.Element => {
+const App = (): ReactElement => {
     useEffect(() => {
         window.addEventListener('resize', resizeToMinimum)
         window.addEventListener('load', resizeToMinimum)

@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import styled from 'styled-components'
-import { useAppContext } from './AppContext'
+import { useAppContext } from './AppStateContext'
 import { IChannelInfo } from './util'
 const OuterWrapper = styled.div``
 
@@ -16,11 +16,11 @@ const InnerWrapper = styled.div`
     padding: 10px;
     max-width: 800px;
 `
-const ItemWrapper = styled.div.attrs((props: { image: string }) => ({
+const ItemWrapper = styled.div.attrs<{ $image: string }>(({ $image }) => ({
     style: {
-        backgroundImage: `url(${props.image})`,
+        backgroundImage: `url(${$image})`,
     },
-}))<{ image: string }>`
+}))<{ $image: string }>`
     border-radius: 8px;
     overflow: hidden;
     position: relative;
@@ -45,7 +45,7 @@ const ChannelDetails = (props: IChannelInfo) => {
     const { updateCurrentChannel } = useAppContext()
     return (
         <ItemWrapper
-            image={props.imageSrc}
+            $image={props.imageSrc}
             onClick={() => {
                 updateCurrentChannel(props.id)
             }}
@@ -55,7 +55,7 @@ const ChannelDetails = (props: IChannelInfo) => {
     )
 }
 
-const ChannelsList = (): JSX.Element => {
+const ChannelsList = (): React.JSX.Element => {
     const { channels, favouriteChannels } = useAppContext()
 
     return (
