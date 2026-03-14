@@ -1,38 +1,38 @@
 name: Build and deploy to GitHub pages
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    push:
+        branches: [master]
+    pull_request:
+        branches: [master]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+    build:
+        runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [20.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        strategy:
+            matrix:
+                node-version: [20.x]
+                # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
-    steps:
-    - uses: actions/checkout@v4
-    - name: create env file
-      run: |
-        touch .env
-        echo "VITE_RESTDB_API_KEY=${{ secrets.RESTDB_API_KEY }}" >> .env
-        echo "VITE_RESTDB_BASE_URL=${{ vars.RESTDB_BASE_URL }}" >> .env
-        echo "VITE_RESTDB_COLLECTION=${{ vars.RESTDB_COLLECTION }}" >> .env
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'yarn'
-    - run: corepack enable
-    - run: yarn install --immutable
-    - run: yarn build
-    - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@4.1.5
-      with:
-          branch: gh-pages # The branch the action should deploy to.
-          folder: dist # The folder the action should deploy.
+        steps:
+            - uses: actions/checkout@v4
+            - name: create env file
+              run: |
+                  touch .env
+                  echo "VITE_RESTDB_API_KEY=${{ secrets.RESTDB_API_KEY }}" >> .env
+                  echo "VITE_RESTDB_BASE_URL=${{ vars.RESTDB_BASE_URL }}" >> .env
+                  echo "VITE_RESTDB_COLLECTION=${{ vars.RESTDB_COLLECTION }}" >> .env
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: 'yarn'
+            - run: corepack enable
+            - run: yarn install --immutable
+            - run: yarn build
+            - name: Deploy to GitHub Pages
+              uses: JamesIves/github-pages-deploy-action@4.1.5
+              with:
+                  branch: gh-pages # The branch the action should deploy to.
+                  folder: dist # The folder the action should deploy.

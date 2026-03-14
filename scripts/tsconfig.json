@@ -1,11 +1,9 @@
 {
-  "extends": "../tsconfig",
-  "compilerOptions": {
-     "module": "CommonJS",
-    "outDir": "../dist/scripts",
-    "noEmit": false,
-  },
-  "include": [
-    "."
-  ]
+    "extends": "../tsconfig",
+    "compilerOptions": {
+        "module": "CommonJS",
+        "outDir": "../dist/scripts",
+        "noEmit": false
+    },
+    "include": ["."]
 }
