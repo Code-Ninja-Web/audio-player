@@ -93,6 +93,7 @@ const formatSuggestions = (
         }))
 
 const Header = (): ReactElement => {
+    const appBaseUrl = import.meta.env.BASE_URL
     const { channels, updateCurrentChannel } = useAppContext()
     const [selectedChannel, setSelectedChannel] = useState<IChannelInfo>()
     const [suggestionOpen, setSuggestionOpen] = useState(false)
@@ -140,7 +141,10 @@ const Header = (): ReactElement => {
     return (
         <OuterWrapper>
             <InnerWrapper>
-                <IconImage src={'/assets/icons/icon-x192.png'} alt="Logo" />
+                <IconImage
+                    src={`${appBaseUrl}assets/icons/icon-x192.png`}
+                    alt="Logo"
+                />
                 <Box
                     width="medium"
                     gap="medium"
