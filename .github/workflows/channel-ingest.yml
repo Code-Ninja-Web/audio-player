@@ -8,6 +8,9 @@ on:
     schedule:
         - cron: '0 0/12 * * *'
 
+env:
+    FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
     build:
         runs-on: ubuntu-latest
@@ -18,7 +21,7 @@ jobs:
                 # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v6
             - name: create env file
               run: |
                   touch .env
@@ -27,7 +30,7 @@ jobs:
                   echo "RESTDB_COLLECTION=${{ vars.RESTDB_COLLECTION }}" >> .env
                   echo "INGEST_SOURCE_BASE_URL=${{ vars.INGEST_SOURCE_BASE_URL }}" >> .env
             - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v4
+              uses: actions/setup-node@v6
               with:
                   node-version: ${{ matrix.node-version }}
             - name: Enable Corepack and activate Yarn
