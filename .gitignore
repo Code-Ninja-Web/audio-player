@@ -3,6 +3,10 @@
 /.pnp
 .pnp.js
 .next
+.turbo
+.expo
+apps/expo/ios
+apps/expo/android
 
 # testing
 /coverage
