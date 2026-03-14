@@ -1,29 +1,33 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 export interface KeyValueStorage {
   getItem(key: string): Promise<string | null>
   setItem(key: string, value: string): Promise<void>
 }
 
-const getNativeStorage = async () => {
-  const module = await import('@react-native-async-storage/async-storage')
-  return module.default
-}
+const hasWebLocalStorage = () =>
+  typeof window !== 'undefined' && typeof window.localStorage !== 'undefined'
 
 export const storage: KeyValueStorage = {
   async getItem(key) {
-    if (typeof window !== 'undefined') {
+    if (hasWebLocalStorage()) {
       return Promise.resolve(window.localStorage.getItem(key))
     }
 
-    const nativeStorage = await getNativeStorage()
-    return nativeStorage.getItem(key)
+    if (!AsyncStorage?.getItem) {
+      return null
+    }
+    return AsyncStorage.getItem(key)
   },
   async setItem(key, value) {
-    if (typeof window !== 'undefined') {
+    if (hasWebLocalStorage()) {
       window.localStorage.setItem(key, value)
       return Promise.resolve()
     }
 
-    const nativeStorage = await getNativeStorage()
-    await nativeStorage.setItem(key, value)
+    if (!AsyncStorage?.setItem) {
+      return
+    }
+    await AsyncStorage.setItem(key, value)
   },
 }

@@ -1,4 +1,4 @@
-import { createFont, createTamagui, createTokens } from 'tamagui'
+import { createFont, createTamagui, createTokens } from '@tamagui/core'
 
 const inter = createFont({
   family: 'Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif',

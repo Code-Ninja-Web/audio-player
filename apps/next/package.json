@@ -5,9 +5,9 @@
     "dev": "next dev --webpack",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "tsc --noEmit",
     "typecheck": "tsc --noEmit",
-    "test": "echo \"No tests yet\""
+    "test": "pnpm run typecheck"
   },
   "dependencies": {
     "@audio-player/app": "workspace:*",

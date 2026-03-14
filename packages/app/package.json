@@ -5,20 +5,21 @@
   "main": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
-    "lint": "echo \"lint pending\"",
+    "lint": "tsc --noEmit",
     "typecheck": "tsc --noEmit",
-    "test": "echo \"tests pending\""
+    "test": "vitest run --config vitest.config.ts"
   },
   "dependencies": {
     "@audio-player/config": "workspace:*",
     "@react-native-async-storage/async-storage": "^2.2.0",
+    "@tamagui/core": "1.144.4",
     "hls.js": "^1.6.15",
     "react": "19.2.4",
-    "react-native": "0.83.2",
-    "tamagui": "^1.132.18"
+    "react-native": "0.83.2"
   },
   "devDependencies": {
     "@types/react": "^19.2.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.0"
   }
 }

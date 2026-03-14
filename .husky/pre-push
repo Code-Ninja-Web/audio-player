@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-yarn test:no-watch
+pnpm test

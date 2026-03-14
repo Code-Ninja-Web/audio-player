@@ -21,6 +21,11 @@ apps/expo/android
 .env.development.local
 .env.test.local
 .env.production.local
+apps/expo/.env
+apps/expo/.env.local
+apps/expo/.env.development.local
+apps/expo/.env.test.local
+apps/expo/.env.production.local
 
 # If Packages have their independent repo
 # /packages

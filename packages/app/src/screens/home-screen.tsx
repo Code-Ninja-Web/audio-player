@@ -3,16 +3,18 @@
 import tamaguiConfig from '@audio-player/config/tamagui'
 import { useMemo } from 'react'
 import {
-  Button,
-  Image,
-  ScrollView,
-  Spinner,
+  ActivityIndicator,
+  Image as NativeImage,
+  Pressable,
+  ScrollView as NativeScrollView,
+  StyleSheet,
+} from 'react-native'
+import {
   TamaguiProvider,
   Text,
   Theme,
-  XStack,
-  YStack,
-} from 'tamagui'
+  View,
+} from '@tamagui/core'
 import { AppContextProvider, useAppContext } from '../context/app-context'
 import type { ChannelInfo } from '../domain/channel'
 import type { AudioPlayerEngine } from '../player/player-engine'
@@ -20,6 +22,7 @@ import { areEqual } from '../utils/are-equal'
 
 const HomeBody = () => {
   const {
+    isInitialized,
     channels,
     favouriteChannels,
     currentChannel,
@@ -41,28 +44,41 @@ const HomeBody = () => {
   )
 
   if (!channels.length) {
+    if (isInitialized) {
+      return (
+        <View flex={1} alignItems="center" justifyContent="center" backgroundColor="$background" padding="$5" gap="$2">
+          <Text color="$color" fontSize="$5" fontWeight="700">
+            No channels available
+          </Text>
+          <Text color="$mutedColor" textAlign="center">
+            Set EXPO_PUBLIC_RESTDB_* (mobile) or NEXT_PUBLIC_RESTDB_* (web) and restart the app.
+          </Text>
+        </View>
+      )
+    }
+
     return (
-      <YStack flex={1} alignItems="center" justifyContent="center" backgroundColor="$background">
-        <Spinner color="$accentColor" size="large" />
-      </YStack>
+      <View flex={1} alignItems="center" justifyContent="center" backgroundColor="$background">
+        <ActivityIndicator color="#4bb3fd" size="large" />
+      </View>
     )
   }
 
   return (
-    <YStack flex={1} backgroundColor="$background" paddingHorizontal="$5" paddingTop="$6" gap="$3">
+    <View flex={1} backgroundColor="$background" paddingHorizontal="$5" paddingTop="$6" gap="$3">
       <Text color="$color" fontSize="$6" fontWeight="700">
         Audio Player
       </Text>
 
-      <YStack gap="$4">
+      <View gap="$4">
         {channelSections.map((section) =>
           section.items.length ? (
-            <YStack key={section.key} gap="$2">
+            <View key={section.key} gap="$2">
               <Text color="$mutedColor" fontSize="$4" fontWeight="600">
                 {section.title}
               </Text>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                <XStack gap="$3" paddingRight="$2">
+              <NativeScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+                <View flexDirection="row" gap="$3" paddingRight="$2">
                   {section.items.map((item) => (
                     <ChannelCard
                       key={`${section.key}-${item.id}`}
@@ -71,14 +87,14 @@ const HomeBody = () => {
                       onPress={() => void updateCurrentChannel(item.id, true)}
                     />
                   ))}
-                </XStack>
-              </ScrollView>
-            </YStack>
+                </View>
+              </NativeScrollView>
+            </View>
           ) : null,
         )}
-      </YStack>
+      </View>
 
-      <YStack
+      <View
         marginTop="auto"
         marginBottom="$5"
         padding="$5"
@@ -100,19 +116,19 @@ const HomeBody = () => {
                 ? 'Now playing'
                 : 'Paused'}
         </Text>
-        <XStack gap="$2">
+        <View flexDirection="row" gap="$2">
           <ControlButton label="Prev" onPress={() => void prevChannel()} />
           <ControlButton label={isPlaying ? 'Pause' : 'Play'} onPress={() => void togglePlayBack()} />
           <ControlButton label="Next" onPress={() => void nextChannel()} />
-        </XStack>
+        </View>
         {currentChannel ? (
           <ControlButton
             label={favouriteChannels.some((c) => areEqual(c.id, currentChannel.id)) ? 'Unfavourite' : 'Favourite'}
             onPress={() => toggleFavouriteChannel(currentChannel)}
           />
         ) : null}
-      </YStack>
-    </YStack>
+      </View>
+    </View>
   )
 }
 
@@ -125,50 +141,39 @@ const ChannelCard = ({
   active: boolean
   onPress: () => void
 }) => (
-  <Button
-    chromeless
-    onPress={onPress}
-    padding="$2"
-    width={140}
-    height={170}
-    backgroundColor="$cardBackground"
-    borderRadius="$2"
-    borderWidth={1}
-    borderColor={active ? '$accentColor' : '$borderColor'}
-    alignItems="flex-start"
-    justifyContent="flex-start"
-    gap="$2"
-  >
-    <Image
-      source={{ uri: channel.imageSrc }}
-      width={124}
-      height={110}
-      borderRadius={8}
-      resizeMode="cover"
-      backgroundColor="#101722"
-    />
-    <Text color="$color" fontSize="$2" fontWeight="600" numberOfLines={2}>
-      {channel.title}
-    </Text>
-  </Button>
+  <Pressable onPress={onPress} style={({ pressed }) => [styles.cardPressable, pressed && styles.cardPressed]}>
+    <View
+      padding="$2"
+      width={140}
+      height={170}
+      backgroundColor="$cardBackground"
+      borderRadius="$2"
+      borderWidth={1}
+      borderColor={active ? '$accentColor' : '$borderColor'}
+      alignItems="flex-start"
+      justifyContent="flex-start"
+      gap="$2"
+    >
+      <NativeImage source={{ uri: channel.imageSrc }} style={styles.channelImage} resizeMode="cover" />
+      <Text color="$color" fontSize="$2" fontWeight="600" numberOfLines={2}>
+        {channel.title}
+      </Text>
+    </View>
+  </Pressable>
 )
 
 const ControlButton = ({ label, onPress }: { label: string; onPress: () => void }) => (
-  <Button
-    onPress={onPress}
-    backgroundColor="#24314a"
-    color="$color"
-    borderRadius={999}
-    paddingHorizontal="$3"
-    paddingVertical="$2"
-    fontWeight="600"
-  >
-    {label}
-  </Button>
+  <Pressable onPress={onPress} style={({ pressed }) => [styles.controlButton, pressed && styles.controlButtonPressed]}>
+    <View backgroundColor="#24314a" borderRadius={999} paddingHorizontal="$3" paddingVertical="$2">
+      <Text color="$color" fontWeight="600">
+        {label}
+      </Text>
+    </View>
+  </Pressable>
 )
 
 export const HomeScreen = ({ createEngine }: { createEngine?: () => AudioPlayerEngine }) => (
-  <TamaguiProvider config={tamaguiConfig} defaultTheme="dark">
+  <TamaguiProvider config={tamaguiConfig as any} defaultTheme="dark">
     <Theme name="dark">
       <AppContextProvider createEngine={createEngine}>
         <HomeBody />
@@ -176,3 +181,27 @@ export const HomeScreen = ({ createEngine }: { createEngine?: () => AudioPlayerE
     </Theme>
   </TamaguiProvider>
 )
+
+const styles = StyleSheet.create({
+  cardPressable: {
+    borderRadius: 12,
+  },
+  cardPressed: {
+    opacity: 0.85,
+  },
+  channelImage: {
+    width: 124,
+    height: 110,
+    borderRadius: 8,
+    backgroundColor: '#101722',
+  },
+  controlButton: {
+    borderRadius: 999,
+  },
+  controlButtonPressed: {
+    opacity: 0.9,
+  },
+  scrollContent: {
+    paddingRight: 8,
+  },
+})

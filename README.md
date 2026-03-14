@@ -7,7 +7,6 @@ Cross-platform radio player migration to a Solito-style monorepo:
 - `packages/app`: shared domain, state, and UI
 - `packages/config`: shared tokens/config
 - `packages/scripts`: ingestion pipeline
-- `legacy/vite-app`: archived Vite implementation used as migration reference
 
 ## Requirements
 
@@ -20,6 +19,7 @@ Cross-platform radio player migration to a Solito-style monorepo:
 corepack enable
 pnpm install
 cp .env.example .env.local
+cp apps/expo/.env.example apps/expo/.env.local
 ```
 
 ## Environment Variables
@@ -34,6 +34,8 @@ Set both prefixes if you run both apps:
 - `EXPO_PUBLIC_RESTDB_API_KEY`
 - `EXPO_PUBLIC_RESTDB_BASE_URL`
 - `EXPO_PUBLIC_RESTDB_COLLECTION`
+
+For Expo-only local setup, you can place the mobile values in `apps/expo/.env.local`.
 
 ### Ingestion env
 
@@ -51,6 +53,13 @@ pnpm --filter @audio-player/expo dev
 pnpm dev:all             # all workspaces
 ```
 
+Native mobile runtime commands:
+
+```bash
+pnpm --filter @audio-player/expo ios
+pnpm --filter @audio-player/expo android
+```
+
 ## Quality
 
 ```bash
@@ -59,10 +68,12 @@ pnpm lint
 pnpm test
 ```
 
-## Legacy
+## Expo Runtime QA
 
-The old Vite implementation is preserved under `legacy/vite-app`.
+Use the checklist in [docs/expo-runtime-qa-checklist.md](docs/expo-runtime-qa-checklist.md)
+for background playback, interruption handling, and remote control validation.
 
-```bash
-pnpm legacy:dev
-```
+## Security Notes
+
+- Never commit `.env.local` or other secret-bearing env files.
+- If credentials were ever exposed, rotate those keys immediately.

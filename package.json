@@ -9,9 +9,7 @@
     "build": "turbo run build",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
-    "test": "turbo run test",
-    "legacy:dev": "pnpm --dir legacy/vite-app dev",
-    "legacy:build": "pnpm --dir legacy/vite-app build"
+    "test": "turbo run test"
   },
   "devDependencies": {
     "turbo": "^2.5.0",

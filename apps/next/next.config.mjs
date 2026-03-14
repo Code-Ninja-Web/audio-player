@@ -32,18 +32,14 @@ loadRootEnvFile('.env')
 
 const publicRestDbBaseUrl =
   process.env.NEXT_PUBLIC_RESTDB_BASE_URL ??
-  process.env.VITE_RESTDB_BASE_URL ??
   process.env.RESTDB_BASE_URL ??
   ''
 const publicRestDbCollection =
   process.env.NEXT_PUBLIC_RESTDB_COLLECTION ??
-  process.env.VITE_RESTDB_COLLECTION ??
   process.env.RESTDB_COLLECTION ??
   ''
 const publicRestDbApiKey =
-  process.env.NEXT_PUBLIC_RESTDB_API_KEY ??
-  process.env.VITE_RESTDB_API_KEY ??
-  ''
+  process.env.NEXT_PUBLIC_RESTDB_API_KEY ?? ''
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
