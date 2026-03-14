@@ -1,115 +1,68 @@
-# Audio Player
+# Audio Player Monorepo
 
-Simple React + Vite web app for playing live radio channels.
+Cross-platform radio player migration to a Solito-style monorepo:
 
-The app reads channel metadata from RestDB and plays audio streams (HLS) in a lightweight UI.
-
-## Tech Stack
-
-- React 19 + TypeScript
-- Vite 8
-- Grommet + styled-components
-- HLS.js
-- Vitest + Testing Library
-
-## Project Structure
-
-- `src/`: frontend app
-- `scripts/`: ingest pipeline (scrape source + write to RestDB)
-- `.github/workflows/deploy-pages.yml`: build and GitHub Pages deploy
-- `.github/workflows/channel-ingest.yml`: scheduled ingest job
+- `apps/next`: web app (Next.js)
+- `apps/expo`: mobile app (Expo)
+- `packages/app`: shared domain, state, and UI
+- `packages/config`: shared tokens/config
+- `packages/scripts`: ingestion pipeline
+- `legacy/vite-app`: archived Vite implementation used as migration reference
 
 ## Requirements
 
 - Node.js `>=20`
-- Yarn `4.x` (via Corepack)
+- pnpm `>=10`
 
-## Local Development
-
-1. Install dependencies:
+## Setup
 
 ```bash
 corepack enable
-yarn install
-```
-
-2. Create env file:
-
-```bash
+pnpm install
 cp .env.example .env.local
 ```
 
-3. Fill required values in `.env.local`.
-
-4. Start the app:
-
-```bash
-yarn dev
-```
-
-## Useful Scripts
-
-- `yarn dev`: run Vite dev server
-- `yarn build`: production build
-- `yarn preview`: preview production build
-- `yarn test`: run tests in watch mode
-- `yarn test:no-watch`: run tests once
-- `yarn lint`: run ESLint on `src` and `scripts`
-- `yarn format`: run Prettier write
-- `yarn validate`: typecheck + format check + lint + tests
-- `yarn ingest`: compile and run ingest pipeline
-
 ## Environment Variables
 
-### Frontend
+### Shared frontend env
 
-- `VITE_RESTDB_API_KEY`
-- `VITE_RESTDB_BASE_URL`
-- `VITE_RESTDB_COLLECTION`
+Set both prefixes if you run both apps:
 
-### Ingester
+- `NEXT_PUBLIC_RESTDB_API_KEY`
+- `NEXT_PUBLIC_RESTDB_BASE_URL`
+- `NEXT_PUBLIC_RESTDB_COLLECTION`
+- `EXPO_PUBLIC_RESTDB_API_KEY`
+- `EXPO_PUBLIC_RESTDB_BASE_URL`
+- `EXPO_PUBLIC_RESTDB_COLLECTION`
 
-- `FULL_ACCESS_RESTDB_API_KEY` (required)
-- `RESTDB_BASE_URL` (required)
-- `RESTDB_COLLECTION` (required)
-- `INGEST_SOURCE_BASE_URL` (required)
-- `INGEST_SOURCE_PAGE_PATH` (optional, default: `radio/live.php`)
+### Ingestion env
 
-## Ingester Cron Setup
+- `FULL_ACCESS_RESTDB_API_KEY`
+- `RESTDB_BASE_URL`
+- `RESTDB_COLLECTION`
+- `INGEST_SOURCE_BASE_URL`
+- `INGEST_SOURCE_PAGE_PATH` (optional, defaults to `radio/live.php`)
 
-The ingest pipeline is configured in `.github/workflows/channel-ingest.yml`.
-
-### Current Schedule
-
-```yaml
-on:
-    schedule:
-        - cron: '0 0/12 * * *'
-```
-
-This runs every 12 hours at minute `00` (UTC).
-
-### GitHub Secrets and Variables
-
-Set these in your repository settings:
-
-- Secret: `FULL_ACCESS_RESTDB_API_KEY`
-- Variable: `RESTDB_BASE_URL`
-- Variable: `RESTDB_COLLECTION`
-- Variable: `INGEST_SOURCE_BASE_URL`
-
-The workflow writes them to `.env` in CI, then runs:
+## Run
 
 ```bash
-yarn ingest
+pnpm dev                 # Next.js app
+pnpm --filter @audio-player/expo dev
+pnpm dev:all             # all workspaces
 ```
 
-### Local Ingest Run
-
-To test ingest locally:
+## Quality
 
 ```bash
-yarn ingest
+pnpm typecheck
+pnpm lint
+pnpm test
 ```
 
-Make sure your local env file (`.env.local` or `.env`) includes all required ingester variables.
+## Legacy
+
+The old Vite implementation is preserved under `legacy/vite-app`.
+
+```bash
+pnpm legacy:dev
+```
