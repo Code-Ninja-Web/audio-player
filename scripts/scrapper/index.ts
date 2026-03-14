@@ -52,7 +52,10 @@ const extractChannelsObjectString = (scriptStr: string): string => {
  */
 const parseObjectLiteral = (objectString: string): Record<string, unknown> => {
     try {
-        return new Function(`return (${objectString})`)() as Record<string, unknown>
+        return new Function(`return (${objectString})`)() as Record<
+            string,
+            unknown
+        >
     } catch {
         return {}
     }
@@ -81,8 +84,7 @@ const getSourceBase = (): string => {
 /** Ingest page that contains the channels object (e.g. radio/live.php) */
 const getIngestPageUrl = (): string => {
     const base = getSourceBase()
-    const path =
-        process.env['INGEST_SOURCE_PAGE_PATH'] || 'radio/live.php'
+    const path = process.env['INGEST_SOURCE_PAGE_PATH'] || 'radio/live.php'
     return `${base}/${path.replace(/^\//, '')}`
 }
 
@@ -98,7 +100,9 @@ const fetchChannelsFromIngestPage = async (
     return Object.entries(channels)
         .filter(
             ([_, v]) =>
-                v && typeof v.name === 'string' && typeof v.live_url === 'string'
+                v &&
+                typeof v.name === 'string' &&
+                typeof v.live_url === 'string'
         )
         .map(([id, value]) => ({
             id,
