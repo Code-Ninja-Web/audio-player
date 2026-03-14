@@ -1,0 +1,36 @@
+{
+  "name": "@audio-player/expo",
+  "private": true,
+  "main": "index.ts",
+  "scripts": {
+    "dev": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "lint": "echo \"lint pending\"",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"No tests yet\""
+  },
+  "dependencies": {
+    "@audio-player/app": "workspace:*",
+    "expo": "^55.0.0",
+    "expo-status-bar": "~55.0.4",
+    "react": "19.2.4",
+    "react-native": "0.83.2",
+    "react-native-track-player": "^4.1.2",
+    "solito": "^5.0.0"
+  },
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "exclude": ["react-native-track-player"]
+      }
+    },
+    "install": {
+      "exclude": ["react", "react-native"]
+    }
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "typescript": "^5.9.3"
+  }
+}
