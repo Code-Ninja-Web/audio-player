@@ -1,0 +1,36 @@
+name: Pull Request Validation
+
+on:
+    pull_request:
+        branches: [master]
+
+jobs:
+    validate:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Use Node.js 20
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+                  cache: 'yarn'
+
+            - name: Enable Corepack
+              run: corepack enable
+
+            - name: Install dependencies
+              run: yarn install --immutable
+
+            - name: Typecheck
+              run: yarn typecheck
+
+            - name: Check formatting
+              run: yarn format:check
+
+            - name: Lint
+              run: yarn lint
+
+            - name: Run tests
+              run: yarn test:no-watch

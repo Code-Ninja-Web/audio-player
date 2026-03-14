@@ -1,4 +1,4 @@
-name: Ingest pipeline for create update channel info
+name: Ingest Channel Data
 
 # Required secret: FULL_ACCESS_RESTDB_API_KEY
 # Optional vars (use defaults if unset): RESTDB_BASE_URL, RESTDB_COLLECTION,

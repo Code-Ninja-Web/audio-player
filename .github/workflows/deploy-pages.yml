@@ -1,10 +1,17 @@
-name: Build and deploy to GitHub pages
+name: Deploy GitHub Pages
 
 on:
     push:
         branches: [master]
-    pull_request:
-        branches: [master]
+
+permissions:
+    contents: read
+    pages: write
+    id-token: write
+
+concurrency:
+    group: pages
+    cancel-in-progress: false
 
 jobs:
     build:
@@ -17,6 +24,8 @@ jobs:
 
         steps:
             - uses: actions/checkout@v4
+            - name: Setup Pages
+              uses: actions/configure-pages@v5
             - name: create env file
               run: |
                   touch .env
@@ -31,8 +40,18 @@ jobs:
             - run: corepack enable
             - run: yarn install --immutable
             - run: yarn build
-            - name: Deploy to GitHub Pages
-              uses: JamesIves/github-pages-deploy-action@4.1.5
+            - name: Upload Pages artifact
+              uses: actions/upload-pages-artifact@v3
               with:
-                  branch: gh-pages # The branch the action should deploy to.
-                  folder: dist # The folder the action should deploy.
+                  path: dist
+
+    deploy:
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - name: Deploy to GitHub Pages
+              id: deployment
+              uses: actions/deploy-pages@v4
