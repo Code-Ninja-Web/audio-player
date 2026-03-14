@@ -15,10 +15,12 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: '20'
-                  cache: 'yarn'
 
-            - name: Enable Corepack
-              run: corepack enable
+            - name: Enable Corepack and activate Yarn
+              run: |
+                  corepack enable
+                  corepack prepare yarn@4.13.0 --activate
+                  yarn --version
 
             - name: Install dependencies
               run: yarn install --immutable

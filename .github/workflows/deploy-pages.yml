@@ -36,8 +36,11 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: ${{ matrix.node-version }}
-                  cache: 'yarn'
-            - run: corepack enable
+            - name: Enable Corepack and activate Yarn
+              run: |
+                  corepack enable
+                  corepack prepare yarn@4.13.0 --activate
+                  yarn --version
             - run: yarn install --immutable
             - run: yarn build
             - name: Upload Pages artifact
