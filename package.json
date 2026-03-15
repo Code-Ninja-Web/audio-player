@@ -4,6 +4,7 @@
   "private": true,
   "packageManager": "pnpm@10.2.0",
   "scripts": {
+    "prepare": "husky",
     "dev": "pnpm --filter @audio-player/next dev",
     "dev:all": "turbo run dev --parallel",
     "build": "turbo run build",
@@ -12,6 +13,7 @@
     "test": "turbo run test"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
     "turbo": "^2.5.0",
     "typescript": "^5.9.3"
   }

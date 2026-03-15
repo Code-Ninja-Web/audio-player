@@ -15,8 +15,6 @@ module.exports = [
             'build/**',
             'dist/**',
             'node_modules/**',
-            '.yarn/**',
-            '.pnp.*',
         ],
     },
     js.configs.recommended,
