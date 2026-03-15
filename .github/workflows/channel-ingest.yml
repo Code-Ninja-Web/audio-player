@@ -29,15 +29,15 @@ jobs:
           echo "RESTDB_BASE_URL=${{ vars.RESTDB_BASE_URL }}" >> .env
           echo "RESTDB_COLLECTION=${{ vars.RESTDB_COLLECTION }}" >> .env
           echo "INGEST_SOURCE_BASE_URL=${{ vars.INGEST_SOURCE_BASE_URL }}" >> .env
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.2.0
+          run_install: false
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
-      - name: Enable Corepack and activate pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@10.2.0 --activate
-          pnpm --version
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @audio-player/scripts ingest
