@@ -1,115 +1,126 @@
-# Audio Player
+# Audio Player Monorepo
 
-Simple React + Vite web app for playing live radio channels.
+Cross-platform audio player monorepo built around a shared Solito-style app layer:
 
-The app reads channel metadata from RestDB and plays audio streams (HLS) in a lightweight UI.
-
-## Tech Stack
-
-- React 19 + TypeScript
-- Vite 8
-- Grommet + styled-components
-- HLS.js
-- Vitest + Testing Library
-
-## Project Structure
-
-- `src/`: frontend app
-- `scripts/`: ingest pipeline (scrape source + write to RestDB)
-- `.github/workflows/deploy-pages.yml`: build and GitHub Pages deploy
-- `.github/workflows/channel-ingest.yml`: scheduled ingest job
+- `apps/next`: web app (Next.js)
+- `apps/expo`: mobile app (Expo)
+- `packages/app`: shared domain, state, and UI
+- `packages/config`: shared tokens/config
+- `packages/scripts`: ingestion pipeline
 
 ## Requirements
 
 - Node.js `>=20`
-- Yarn `4.x` (via Corepack)
+- pnpm `>=10`
 
-## Local Development
-
-1. Install dependencies:
+## Setup
 
 ```bash
 corepack enable
-yarn install
-```
-
-2. Create env file:
-
-```bash
+pnpm install
 cp .env.example .env.local
+cp apps/next/.env.example apps/next/.env.local
+cp apps/expo/.env.example apps/expo/.env.local
 ```
 
-3. Fill required values in `.env.local`.
-
-4. Start the app:
-
-```bash
-yarn dev
-```
-
-## Useful Scripts
-
-- `yarn dev`: run Vite dev server
-- `yarn build`: production build
-- `yarn preview`: preview production build
-- `yarn test`: run tests in watch mode
-- `yarn test:no-watch`: run tests once
-- `yarn lint`: run ESLint on `src` and `scripts`
-- `yarn format`: run Prettier write
-- `yarn validate`: typecheck + format check + lint + tests
-- `yarn ingest`: compile and run ingest pipeline
+`pnpm install` also runs Husky via the repo `prepare` script, so Git hooks are installed automatically for this checkout.
 
 ## Environment Variables
 
-### Frontend
+### Shared frontend env
 
-- `VITE_RESTDB_API_KEY`
-- `VITE_RESTDB_BASE_URL`
-- `VITE_RESTDB_COLLECTION`
+Use the app-local files when you want each app configured independently:
 
-### Ingester
+- `NEXT_PUBLIC_RESTDB_API_KEY`
+- `NEXT_PUBLIC_RESTDB_BASE_URL`
+- `NEXT_PUBLIC_RESTDB_COLLECTION`
+- `EXPO_PUBLIC_RESTDB_API_KEY`
+- `EXPO_PUBLIC_RESTDB_BASE_URL`
+- `EXPO_PUBLIC_RESTDB_COLLECTION`
 
-- `FULL_ACCESS_RESTDB_API_KEY` (required)
-- `RESTDB_BASE_URL` (required)
-- `RESTDB_COLLECTION` (required)
-- `INGEST_SOURCE_BASE_URL` (required)
-- `INGEST_SOURCE_PAGE_PATH` (optional, default: `radio/live.php`)
+Files:
 
-## Ingester Cron Setup
+- `apps/next/.env.local` for the Next app
+- `apps/expo/.env.local` for the Expo app
+- `.env.local` for shared root values used by local tooling and fallback config
 
-The ingest pipeline is configured in `.github/workflows/channel-ingest.yml`.
+Examples:
 
-### Current Schedule
+- [apps/next/.env.example](apps/next/.env.example)
+- [apps/expo/.env.example](apps/expo/.env.example)
+- [.env.example](.env.example)
 
-```yaml
-on:
-    schedule:
-        - cron: '0 0/12 * * *'
-```
+### Ingestion env
 
-This runs every 12 hours at minute `00` (UTC).
+- `FULL_ACCESS_RESTDB_API_KEY`
+- `RESTDB_BASE_URL`
+- `RESTDB_COLLECTION`
+- `INGEST_SOURCE_BASE_URL`
+- `INGEST_SOURCE_PAGE_PATH` (optional, defaults to `radio/live.php`)
 
-### GitHub Secrets and Variables
-
-Set these in your repository settings:
-
-- Secret: `FULL_ACCESS_RESTDB_API_KEY`
-- Variable: `RESTDB_BASE_URL`
-- Variable: `RESTDB_COLLECTION`
-- Variable: `INGEST_SOURCE_BASE_URL`
-
-The workflow writes them to `.env` in CI, then runs:
+## Run
 
 ```bash
-yarn ingest
+pnpm dev                 # Next.js app
+pnpm --filter @audio-player/expo dev
+pnpm dev:all             # all workspaces
 ```
 
-### Local Ingest Run
-
-To test ingest locally:
+Web production build:
 
 ```bash
-yarn ingest
+pnpm --filter @audio-player/next build
+pnpm --filter @audio-player/next start
 ```
 
-Make sure your local env file (`.env.local` or `.env`) includes all required ingester variables.
+Native mobile runtime commands:
+
+```bash
+pnpm --filter @audio-player/expo ios
+pnpm --filter @audio-player/expo android
+```
+
+Expo uses a monorepo-aware Metro config in [apps/expo/metro.config.js](apps/expo/metro.config.js), so if module resolution gets weird after dependency changes, restart with a cleared cache:
+
+```bash
+pnpm --filter @audio-player/expo dev -- --clear
+```
+
+## Quality
+
+```bash
+pnpm typecheck
+pnpm lint
+pnpm test
+```
+
+Git hooks:
+
+- `pre-commit` runs `pnpm lint`
+- `pre-push` runs `pnpm test`
+
+## Deploy
+
+### Next.js on Vercel
+
+Recommended Vercel project settings for this monorepo:
+
+- Root Directory: `apps/next`
+- Install Command: `pnpm install`
+- Build Command: `pnpm build`
+
+Set these Vercel environment variables:
+
+- `NEXT_PUBLIC_RESTDB_API_KEY`
+- `NEXT_PUBLIC_RESTDB_BASE_URL`
+- `NEXT_PUBLIC_RESTDB_COLLECTION`
+
+## Expo Runtime QA
+
+Use the checklist in [docs/expo-runtime-qa-checklist.md](docs/expo-runtime-qa-checklist.md)
+for background playback, interruption handling, and remote control validation.
+
+## Security Notes
+
+- Never commit `.env.local` or other secret-bearing env files.
+- If credentials were ever exposed, rotate those keys immediately.

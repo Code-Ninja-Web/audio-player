@@ -1,7 +1,13 @@
 version: 2
 updates:
     - package-ecosystem: 'npm'
-      directory: '/'
+      directories:
+          - '/'
+          - '/apps/expo'
+          - '/apps/next'
+          - '/packages/app'
+          - '/packages/config'
+          - '/packages/scripts'
       schedule:
           interval: 'monthly'
       ignore:

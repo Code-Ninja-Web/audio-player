@@ -1,0 +1,8 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": ["tokens.ts", "tamagui.ts", "tamagui-env.d.ts"],
+  "exclude": ["node_modules"]
+}

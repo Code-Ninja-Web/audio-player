@@ -1,25 +1,11 @@
 {
-    "compilerOptions": {
-        "baseUrl": "./",
-        "module": "esnext",
-        "moduleResolution": "node",
-        "noImplicitAny": true,
-        "removeComments": true,
-        "preserveConstEnums": true,
-        "sourceMap": true,
-        "resolveJsonModule": true,
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "target": "es2015",
-        "lib": ["es6", "dom", "es2017"],
-        "allowJs": true,
-        "skipLibCheck": true,
-        "strict": true,
-        "forceConsistentCasingInFileNames": true,
-        "noFallthroughCasesInSwitch": true,
-        "isolatedModules": true,
-        "noEmit": true,
-        "jsx": "react"
-    },
-    "include": ["src"]
+  "extends": "./tsconfig.base.json",
+  "files": [],
+  "references": [
+    { "path": "./packages/config" },
+    { "path": "./packages/app" },
+    { "path": "./packages/scripts" },
+    { "path": "./apps/next" },
+    { "path": "./apps/expo" }
+  ]
 }
