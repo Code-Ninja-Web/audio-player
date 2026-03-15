@@ -14,7 +14,7 @@ interface IChannelItemValue {
 }
 
 const getLastScriptTag = (htmlStr: string): string => {
-    const regex = /<script[\s\S]*?>([\s\S]*?)<\/script>/gi
+    const regex = /<script[\s\S]*?>([\s\S]*?)<\/script\s*>/gi
     let match
     let lastScript = ''
     while ((match = regex.exec(htmlStr)) !== null) {
